@@ -5,6 +5,7 @@ import Copy from "@/components/icons/copy";
 import InscriptionIcon from "@/components/InscriptionIcon";
 import { getInscriptionContents, getInscriptionDetails, Inscription, MimeType } from "@/modules/ordinals.api";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 
@@ -95,7 +96,9 @@ function OrdinalDetailInfo({ inscriptionId, userAddress }: { inscriptionId: stri
       </div>
       <div>
         <label className="font-bold text-gray-300">Owner Address</label>
-        <p>{userAddress}</p>
+        <Link target="_blank" href={`https://ordiscan.com/address/${userAddress}`}>
+          <p>{userAddress}</p>
+        </Link>
       </div>
     </div>
   );
