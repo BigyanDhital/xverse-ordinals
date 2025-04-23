@@ -138,6 +138,7 @@ function OrdinalAttributes({ inscription }) {
 }
 
 function AttributeDetail({ label, value }: { label: string; value: string }) {
+  if (!value) return null;
   return (
     <div className="w-full overflow-hidden ">
       <p className="font-bold">{label}</p>
