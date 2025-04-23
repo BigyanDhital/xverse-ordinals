@@ -36,7 +36,6 @@ export default function OrdinalsLookup() {
     }
     utxoQuery.refetch();
   };
-  console.log("utxos:", data);
   return (
     <div className="">
       <div className="flex flex-col gap-2">

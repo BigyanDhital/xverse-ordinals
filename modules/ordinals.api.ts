@@ -30,7 +30,6 @@ export const getAdressUtxos = async (
   try {
     const url = `${process.env.NEXT_PUBLIC_API_BASE}address/${userAddress}/ordinal-utxo`;
 
-    console.log(`getAdressUtxos`, url);
     const response = await axios.get(url);
     return { data: response.data };
   } catch (error) {
@@ -78,7 +77,6 @@ export const getInscriptionDetails = async (
 
     const url = `${process.env.NEXT_PUBLIC_API_BASE}address/${userAddress}/ordinals/inscriptions/${inscriptionId}`;
 
-    console.log(`getInscriptionDetails`, url);
     const response = await axios.get(url);
     return { data: response.data };
   } catch (error) {
@@ -94,7 +92,6 @@ export const getInscriptionContents = async (inscriptionId: string): Promise<{ d
 
     const url = `https://ord.xverse.app/content/${inscriptionId}`;
 
-    console.log(`getInscriptionContents`, url);
     const response = await axios.get(url);
     return { data: response.data };
   } catch (error) {

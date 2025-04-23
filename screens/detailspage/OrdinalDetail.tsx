@@ -24,8 +24,6 @@ export function OrdinalDetail() {
     enabled: Boolean(id),
   });
 
-  console.log(inscriptionDetails?.data?.mime_type, { inscriptionContents, inscriptionDetails });
-
   return (
     <div className="grid items-center">
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
