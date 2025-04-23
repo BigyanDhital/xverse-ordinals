@@ -15,7 +15,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 const PAGE_SIZE = 30;
 export default function OrdinalsLookup() {
-  const [userAddress, setUserAddress] = useState("bc1pe6y27ey6gzh6p0j250kz23zra7xn89703pvmtzx239zzstg47j3s3vdvvs");
+  const [userAddress, setUserAddress] = useState("");
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,7 +26,7 @@ export default function OrdinalsLookup() {
   const { data, isFetching, ...utxoQuery } = useQuery({
     queryKey: [`utxo-${userAddress}-${currentPage}`],
     queryFn: () => getAdressUtxos(userAddress, offset),
-    enabled: AddressValidator.validate(userAddress),
+    enabled: AddressValidator.validate(userAddress, "bitcoin"),
   });
 
   const handleAddressInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ export default function OrdinalsLookup() {
       toast(`User address required`);
       return;
     }
-    const isValid = AddressValidator.validate(userAddress);
+    const isValid = AddressValidator.validate(userAddress, "bitcoin");
     if (!isValid) {
       toast(`Invalid Bitcoin address`);
       return;

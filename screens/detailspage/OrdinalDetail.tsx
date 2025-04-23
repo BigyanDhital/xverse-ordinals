@@ -6,13 +6,15 @@ import InscriptionIcon from "@/components/InscriptionIcon";
 import { getInscriptionContents, getInscriptionDetails, Inscription, MimeType } from "@/modules/ordinals.api";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import React from "react";
+import Validator from "multicoin-address-validator";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect } from "react";
 
 export function OrdinalDetail() {
   const searchParams = useSearchParams();
   const userAddress = searchParams.get("userAddress") || "";
   const id = searchParams.get("id") || "";
+  const router = useRouter();
 
   const { data: inscriptionDetails, ...detailQuery } = useQuery({
     queryKey: [`inscriptionDetails-${id}`],
@@ -25,6 +27,9 @@ export function OrdinalDetail() {
     queryFn: () => getInscriptionContents(id),
     enabled: Boolean(id),
   });
+  useEffect(() => {
+    if (!Validator.validate(userAddress, "bitcoin") || !id) router.push("/");
+  }, []);
 
   return (
     <div className="grid ">
