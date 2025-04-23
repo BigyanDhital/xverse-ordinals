@@ -1,14 +1,14 @@
 "use client";
 
 import Button from "@/components/button";
-import Copy from "@/components/icons/copy";
-import InscriptionIcon from "@/components/InscriptionIcon";
-import { getInscriptionContents, getInscriptionDetails, Inscription, MimeType } from "@/modules/ordinals.api";
+import { getInscriptionContents, getInscriptionDetails, Inscription } from "@/modules/ordinals.api";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
-import Validator from "multicoin-address-validator";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
+import { OrdinalContent } from "./OrdinalContent";
+import { OrdinalAttributes, OrdinalMetadata } from "./OrdinalAttributes";
+// @ts-ignore
+import Validator from "multicoin-address-validator";
 
 export function OrdinalDetail() {
   const searchParams = useSearchParams();
@@ -30,6 +30,7 @@ export function OrdinalDetail() {
   useEffect(() => {
     if (!Validator.validate(userAddress, "bitcoin") || !id) router.push("/");
   }, []);
+  console.log({ inscriptionContents, inscriptionDetails });
 
   return (
     <div className="grid ">
@@ -49,7 +50,7 @@ export function OrdinalDetail() {
           {inscriptionDetails?.data?.id ? (
             <div className="grid gap-4">
               <div className="border border-white/60 rounded-md p-4">
-                <OrdinalDetailInfo inscriptionId={inscriptionDetails.data.id} userAddress={userAddress} />
+                <OrdinalMetadata inscriptionId={inscriptionDetails.data.id} userAddress={userAddress} />
               </div>
               <div className="border border-white/60 rounded-md p-4">
                 <OrdinalAttributes inscription={inscriptionDetails.data} />
@@ -62,95 +63,6 @@ export function OrdinalDetail() {
             </div>
           ) : null}
         </div>
-      </div>
-    </div>
-  );
-}
-
-function OrdinalContent({
-  category,
-  content,
-  type,
-  id,
-}: {
-  category?: string;
-  content: any;
-  type: MimeType;
-  id: string;
-}) {
-  if (type == "text/plain" && category === "sns") return <p>{content?.name}</p>;
-  if (type == "text/plain") return <p>{JSON.stringify(content, null, 2)}</p>;
-  if (type === "text/html")
-    return (
-      <div className="p-4 rounded-md w-full h-auto border border-white/60 overflow-hidden">
-        <p className="overflow-hidden">{JSON.stringify(content, null, 2)}</p>
-        <iframe className="w-100 h-100" dangerouslySetInnerHTML={{ __html: content }} sandbox="true" />
-      </div>
-    );
-  if (type?.startsWith("image/"))
-    return <img src={`https://ord.xverse.app/content/${id}`} className="w-full h-auto" alt="Ordinal Content" />;
-  return null;
-}
-
-function OrdinalDetailInfo({ inscriptionId, userAddress }: { inscriptionId: string; userAddress: string }) {
-  return (
-    <div className="grid gap-4 w-full overflow-hidden">
-      <div>
-        <label className="font-bold text-gray-300">Inscription id</label>
-        <p>{inscriptionId}</p>
-      </div>
-      <div>
-        <label className="font-bold text-gray-300">Owner Address</label>
-        <Link target="_blank" href={`https://ordiscan.com/address/${userAddress}`}>
-          <p>{userAddress}</p>
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function OrdinalAttributes({ inscription }: { inscription: Inscription }) {
-  return (
-    <div className="">
-      <h3 className="font-bold">Attributes</h3>
-      <div className="mt-5 grid gap-3">
-        <AttributeDetail label={"ID"} value={inscription?.id} />
-        <AttributeDetail label={"Number"} value={inscription?.number} />
-        <AttributeDetail label={"Owner Address"} value={inscription?.address} />
-        <AttributeDetail label={"Genesis Address"} value={inscription?.genesis_address} />
-        <AttributeDetail label={"Location"} value={inscription?.location} />
-        <AttributeDetail label={"Genesis Block Height"} value={inscription?.genesis_block_height} />
-        <AttributeDetail label={"Genesis Block Height"} value={inscription?.genesis_block_hash} />
-        <AttributeDetail label={"Genesis Txn"} value={inscription?.genesis_tx_id} />
-        <AttributeDetail label={"genesis_fee"} value={inscription?.genesis_fee} />
-        <AttributeDetail label={"Genesis Timestamp"} value={inscription?.genesis_timestamp} />
-        <AttributeDetail label={"Timestamp"} value={inscription?.timestamp} />
-        <AttributeDetail label={"Output"} value={inscription?.output} />
-        <AttributeDetail label={"sat_ordinal"} value={inscription?.sat_ordinal} />
-        <AttributeDetail label={"Rarity"} value={inscription?.sat_rarity} />
-        <AttributeDetail label={"Coinbase Height"} value={inscription?.sat_coinbase_height} />
-        <AttributeDetail label={"MIME type"} value={inscription?.mime_type} />
-        <AttributeDetail label={"Content Type"} value={inscription?.content_type} />
-        <AttributeDetail label={"Content Length"} value={inscription?.content_length} />
-        <AttributeDetail label={"Txn Id"} value={inscription?.tx_id} />
-        <AttributeDetail label={"value"} value={inscription?.value} />
-        <AttributeDetail label={"Collection ID"} value={inscription?.collection_id} />
-        <AttributeDetail label={"Collection Name"} value={inscription?.collection_name} />
-        <AttributeDetail label={"Inscription Floor Price"} value={inscription?.inscription_floor_price} />
-      </div>
-    </div>
-  );
-}
-
-function AttributeDetail({ label, value }: { label: string; value: number | string }) {
-  if (!value) return null;
-  return (
-    <div className="w-full overflow-hidden ">
-      <p className="font-bold">{label}</p>
-
-      <div className="w-full overflow-hidden  bg-gray-800/50 p-2 flex justify-between">
-        <p className="flex-1 rounded-md overflow-hidden">{value}</p>
-        <Copy value={value} />
       </div>
     </div>
   );

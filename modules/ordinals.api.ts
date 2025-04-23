@@ -40,7 +40,7 @@ export const getAdressUtxos = async (
     return { data: undefined, errorMessage };
   }
 };
-export type MimeType = "text/plain" | "text/html" | `image/png`;
+export type MimeType = "text/plain" | "text/html" | `image/png` | "image/svg+xml";
 
 export type Inscription = {
   id: string;
