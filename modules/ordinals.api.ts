@@ -25,10 +25,12 @@ type OrdinalsResponse = {
   results: Utxo[];
 };
 export const getAdressUtxos = async (
-  userAddress: string
+  userAddress: string,
+  offset?: number
 ): Promise<{ data?: OrdinalsResponse; errorMessage?: string }> => {
   try {
-    const url = `${process.env.NEXT_PUBLIC_API_BASE}address/${userAddress}/ordinal-utxo`;
+    if (!offset) offset = 0;
+    const url = `${process.env.NEXT_PUBLIC_API_BASE}address/${userAddress}/ordinal-utxo?offset=${offset}`;
 
     const response = await axios.get(url);
     return { data: response.data };
