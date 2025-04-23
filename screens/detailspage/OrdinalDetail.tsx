@@ -1,8 +1,8 @@
 "use client";
 
 import Button from "@/components/button";
-import Arrow from "@/components/icons/arrow";
 import Copy from "@/components/icons/copy";
+import InscriptionIcon from "@/components/InscriptionIcon";
 import { getInscriptionContents, getInscriptionDetails, Inscription, MimeType } from "@/modules/ordinals.api";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
@@ -26,15 +26,18 @@ export function OrdinalDetail() {
   });
 
   return (
-    <div className="grid items-center">
+    <div className="grid ">
+      {detailQuery?.isFetching ? <p className="text-4xl text-center">Please wait...</p> : null}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
         <div className="md:col-span-1">
-          <OrdinalContent
-            category={inscriptionDetails?.data?.category}
-            content={inscriptionContents?.data}
-            type={inscriptionDetails?.data?.mime_type}
-            id={id}
-          />
+          <div className="p-2 rounded-md w-full h-auto   overflow-hidden flex gap-2">
+            <OrdinalContent
+              category={inscriptionDetails?.data?.category}
+              content={inscriptionContents?.data}
+              type={inscriptionDetails?.data?.mime_type}
+              id={id}
+            />
+          </div>
         </div>
         <div className="col-span-1 lg:col-span-2 text-wrap">
           {inscriptionDetails?.data?.id ? (
@@ -73,20 +76,14 @@ function OrdinalContent({
   if (type == "text/plain") return <p>{JSON.stringify(content, null, 2)}</p>;
   if (type === "text/html")
     return (
-      <div
-        className=" p-4 rounded-md w-full h-auto border border-white/60
- overflow-hidden"
-      >
+      <div className="p-4 rounded-md w-full h-auto border border-white/60 overflow-hidden">
         <p className="overflow-hidden">{JSON.stringify(content, null, 2)}</p>
-        <iframe
-          className="w-full h-full"
-          style={{ overflow: "hidden" }}
-          dangerouslySetInnerHTML={{ __html: content }}
-          sandbox="true"
-        />
+        <iframe className="w-100 h-100" dangerouslySetInnerHTML={{ __html: content }} sandbox="true" />
       </div>
     );
-  if (type) return <img src={`https://ord.xverse.app/content/${id}`} className="w-full h-auto" alt="Ordinal Content" />;
+  if (type?.startsWith("image/"))
+    return <img src={`https://ord.xverse.app/content/${id}`} className="w-full h-auto" alt="Ordinal Content" />;
+  return null;
 }
 
 function OrdinalDetailInfo({ inscriptionId, userAddress }: { inscriptionId: string; userAddress: string }) {

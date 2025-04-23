@@ -2,10 +2,11 @@ import React from "react";
 import { MimeTypeIcon } from "./icons/mimetype";
 import { MimeType } from "@/modules/ordinals.api";
 
-export default function InscriptionIcon({ type, content = "" }: { type: MimeType; content?: string }) {
+export default function InscriptionIcon({ type, category = "" }: { type?: MimeType; category?: string }) {
+  if (!type) return null;
   return (
     <div>
-      {type?.startsWith("text/plain") && content === "sns" ? (
+      {type?.startsWith("text/plain") && category === "sns" ? (
         <div className="flex items-center justify-center">
           <MimeTypeIcon.Link />
         </div>
