@@ -123,7 +123,7 @@ function Pagination({
   );
 }
 
-function OrdinalUtxo({ id, type }: { id: string; type?: string }) {
+function OrdinalUtxo({ id, type, content }: { id: string; type?: string; content?: string }) {
   return (
     <div className="flex justify-between items-center">
       <div className="w-20 h-20  ">
