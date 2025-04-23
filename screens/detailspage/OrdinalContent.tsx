@@ -20,12 +20,8 @@ export function OrdinalContent({
   if (type === "text/html" || content?.startsWith(`<!`)) {
     return (
       <div className="p-4 rounded-md w-full h-auto border border-white/60 overflow-hidden">
-        <iframe
-          sandbox=""
-          className="w-200 h-auto"
-          src={`data:text/html;charset=utf-8,${encodeURIComponent(content)}`}
-        />
-        <div className="w-full h-auto" dangerouslySetInnerHTML={{ __html: content }} />
+        <iframe sandbox="" src={`data:text/html;charset=utf-8,${encodeURIComponent(content)}`} />
+        <p>{content}</p>
       </div>
     );
   }
