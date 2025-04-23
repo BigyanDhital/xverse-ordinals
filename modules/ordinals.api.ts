@@ -42,7 +42,7 @@ export const getAdressUtxos = async (
 };
 export type MimeType = "text/plain" | "text/html" | `image/png`;
 
-type Inscription = {
+export type Inscription = {
   id: string;
   number: number;
   address: string;

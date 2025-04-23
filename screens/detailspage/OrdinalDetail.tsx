@@ -3,7 +3,7 @@
 import Button from "@/components/button";
 import Arrow from "@/components/icons/arrow";
 import Copy from "@/components/icons/copy";
-import { getInscriptionContents, getInscriptionDetails, MimeType } from "@/modules/ordinals.api";
+import { getInscriptionContents, getInscriptionDetails, Inscription, MimeType } from "@/modules/ordinals.api";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import React from "react";
@@ -104,7 +104,7 @@ function OrdinalDetailInfo({ inscriptionId, userAddress }: { inscriptionId: stri
   );
 }
 
-function OrdinalAttributes({ inscription }) {
+function OrdinalAttributes({ inscription }: { inscription: Inscription }) {
   return (
     <div className="">
       <h3 className="font-bold">Attributes</h3>
@@ -137,7 +137,7 @@ function OrdinalAttributes({ inscription }) {
   );
 }
 
-function AttributeDetail({ label, value }: { label: string; value: string }) {
+function AttributeDetail({ label, value }: { label: string; value: number | string }) {
   if (!value) return null;
   return (
     <div className="w-full overflow-hidden ">
